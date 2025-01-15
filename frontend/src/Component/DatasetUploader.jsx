@@ -4,11 +4,12 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@mui/material";
 import { AiFillDelete } from "react-icons/ai";
+import axios from "axios";
 import { DatasetContext } from "../Context/DatasetContext";
 
 const DatasetUploader = () => {
   const {
-    dataset,
+    dataset = [],  // Default to an empty array if dataset is undefined or null
     setDataset,
     column,
     setColumn,
@@ -22,53 +23,81 @@ const DatasetUploader = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file?.type !== "text/csv") {
+  // Handle File Upload
+  const handleFileUpload = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile?.type !== "text/csv") {
       toast.error("Please upload a valid CSV file.");
       setDataset([]);
       setColumn([]);
       return;
     }
-
+  
     setIsLoading(true);
-
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (result) => {
-        const cleanedData = result.data.map((row) =>
-          Object.fromEntries(
-            Object.entries(row).map(([key, value]) => [
-              key,
-              typeof value === "string" ? value.replace(/�/g, "_") : value,
-            ])
-          )
-        );
-
-        setDataset(cleanedData); // Update dataset
-        setColumn(Object.keys(cleanedData[0] || {})); 
-        setIsLoading(false);
-      },
-      error: () => {
-        toast.error("Error parsing the CSV file.");
-        setIsLoading(false);
-      },
-    });
+  
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+  
+    try {
+      const response = await axios.post("http://localhost:3000/upload-csv", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      // Ensure the response contains dataset and columns
+      if (response.data.dataset && response.data.columns) {
+        setDataset(response.data.dataset);
+        setColumn(response.data.columns);
+        toast.success("File uploaded successfully.");
+      } else {
+        toast.error("No data received.");
+      }
+  
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setIsLoading(false);
+      toast.error("Error uploading the file.");
+    }
   };
+  
 
-  const handleDelete = () => {
-    setDataset([]); 
-    setColumn([]);
-    setFileInputKey(Date.now());
-    toast.success("Dataset deleted successfully.", { autoClose: 1000 });
+  // Handle Dataset Deletion
+  const handleDelete = async () => {
+    if (!dataset || dataset.length === 0) {
+      toast.error("No dataset available to delete.");
+      return;
+    }
+  
+    // Assuming dataset[0] contains the dataset's unique identifier
+    const datasetId = dataset[0]?._id;
+  
+    if (!datasetId) {
+      toast.error("No valid dataset ID found to delete.");
+      return;
+    }
+  
+    try {
+      const response = await axios.delete(`http://localhost:3000/delete-dataset/${datasetId}`);
+      if (response.data.message === "Dataset deleted successfully!") {
+        setDataset([]);  // Clear the local dataset
+        setColumn([]);
+        setFileInputKey(Date.now()); // Reset file input
+        toast.success("Dataset deleted successfully.", { autoClose: 1000 });
+      } else {
+        toast.error("Failed to delete dataset.");
+      }
+    } catch (error) {
+      console.error("Error deleting dataset:", error);
+      toast.error("Error deleting dataset.");
+    }
   };
-
+  
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dataset.slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentItems = Array.isArray(dataset) ? dataset.slice(indexOfFirstItem, indexOfLastItem) : [];
   const totalPages = Math.ceil(dataset.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
@@ -90,14 +119,7 @@ const DatasetUploader = () => {
           onChange={handleFileUpload}
           className="p-3 border-2 border-gray-300 rounded-lg shadow-md focus:outline-none"
         />
-        <Button
-          variant="contained"
-          color="error"
-          onClick={handleDelete}
-          className="flex items-center gap-2 p-3 bg-red-600 hover:bg-red-700 rounded-md text-white"
-        >
-          <AiFillDelete size={20} /> Delete Dataset
-        </Button>
+        
       </div>
 
       {/* Table Display */}

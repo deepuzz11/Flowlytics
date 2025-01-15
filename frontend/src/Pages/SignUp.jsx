@@ -16,7 +16,6 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password, firstName, lastName);
     if (!email || !password || !firstName) {
       toast.error("All credentials are required", { autoClose: 1000 });
       return;
@@ -29,11 +28,16 @@ const SignUp = () => {
         password,
       });
       
-      // If the user was created successfully
+      if(response.status === 200)
+      {
+        const data = response.data;
+        localStorage.getItem('token', data.data)
+        // If the user was created successfully
       toast.success("SignUp Successful", { autoClose: 1000 });
       
       // Navigate to the desired page
       navigate("/flowlytics");
+      }
     } catch (error) {
       // Handle errors, e.g., user already exists
       if (error.response && error.response.data) {

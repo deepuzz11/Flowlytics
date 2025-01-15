@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LoginButton from "../Component/LoginButton";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import axios from "axios"; // Import axios for API requests
+import axios from "axios";
 import logo from "../../public/logo.png";
 
 const Login = () => {
@@ -24,8 +24,9 @@ const Login = () => {
                 email,
                 password,
             });
-
             if (response.status === 200) {
+                const data = response.data;
+                localStorage.setItem("token", data.data);
                 toast.success("Login Successfully", { autoClose: 1000 });
                 navigate("/flowlytics");
             }

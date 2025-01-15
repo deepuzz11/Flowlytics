@@ -1,5 +1,7 @@
 # Flowlytics: Seamless Data, Powerful Insights
 
+![logo](https://github.com/user-attachments/assets/9d386b74-d0e7-480f-9325-4b2fbf5a0313)
+
 Flowlytics is an innovative web platform designed to help students explore, analyze, and visualize data, empowering them to learn and apply data science concepts in an interactive and engaging way. By providing tools for dataset exploration, data cleaning, visualization, and predictive modeling, Flowlytics bridges theory with practice, making data science more accessible and fun for middle schoolers.
 
 ## Inspiration
@@ -53,11 +55,8 @@ The next steps for Flowlytics include:
 
 ## Try it out
 Check out the live platform or explore the GitHub repository:
-- [Live Demo Link (if available)](http://your-demo-link)
+- [Live Demo Link ](http://your-demo-link)
 - [GitHub Repository](https://github.com/your-repo)
-
-## Project Media
-![Flowlytics Screenshot](link-to-your-screenshot.jpg)
 
 ### Video Demo
 Watch the video demo on how Flowlytics works and its features:

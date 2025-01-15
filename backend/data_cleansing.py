@@ -29,21 +29,25 @@ def handle_missing_values():
 @app.route('/api/data-cleaning/normalize-data', methods=['POST'])
 def normalize_data():
     df = fetch_data_from_mongo()
-    
-    # Ensure there are numerical columns to normalize
-    numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
-    if numerical_cols.empty:
+
+    # Dynamically find numeric columns
+    numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
+
+    if not numeric_cols.any():
         return jsonify({"message": "No numerical data to normalize!"}), 400
 
-    # Apply Min-Max Scaling only to numerical columns
-    scaler = MinMaxScaler()
-    df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+    # Convert all numeric columns to numeric types if necessary
+    df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 
-    # Optionally, save the normalized data back to MongoDB or return success
-    # collection.update_many({}, {"$set": df.to_dict("records")})
+    # Check if any of the numeric columns have NaN values after conversion
+    if df[numeric_cols].isna().all().all():
+        return jsonify({"message": "No numerical data to normalize!"}), 400
+
+    # Apply MinMax scaling
+    scaler = MinMaxScaler()
+    df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
 
     return jsonify({"message": "Data normalization completed!"}), 200
-
 
 # Encode Categorical Variables (Label Encoding)
 @app.route('/api/data-cleaning/encode-categorical', methods=['POST'])
@@ -56,4 +60,5 @@ def encode_categorical():
     return jsonify({"message": "Categorical variables encoded!"}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)  # You can change the port if needed
+    app.run(debug=True, port=5000, use_reloader=False)
+  # You can change the port if needed

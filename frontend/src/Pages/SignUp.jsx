@@ -1,12 +1,11 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios"; // Import axios
 import "react-toastify/dist/ReactToastify.css";
 import SignUpButton from "../Component/SignUpButton";
 import logo from "../../public/logo.png";
-
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -24,21 +23,33 @@ const SignUp = () => {
     }
 
     try {
-      setEmail(email);
-      setPassword(password);
-      setFirstName(firstName);
-      setLastName(lastName);
-      toast.success("SignUp Successfully", { autoClose: 1000 });
-      navigate("/flow-lytics");
+      const response = await axios.post("http://localhost:3000/auth/sign-up", {
+        firstName,
+        email,
+        password,
+      });
+      
+      // If the user was created successfully
+      toast.success("SignUp Successful", { autoClose: 1000 });
+      
+      // Navigate to the desired page
+      navigate("/flowlytics");
     } catch (error) {
-      toast.error("Cannot login at the moment", { autoClose: 1000 });
+      // Handle errors, e.g., user already exists
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.Warning || "Something went wrong", { autoClose: 1000 });
+      } else {
+        toast.error("Something went wrong", { autoClose: 1000 });
+      }
     } finally {
+      // Clear the form after submission
       setEmail("");
       setPassword("");
       setFirstName("");
       setLastName("");
     }
   };
+
   return (
     <div className="h-screen flex justify-center items-center ">
       <div className="bg-white w-full max-w-sm p-6 rounded-md shadow-2xl">

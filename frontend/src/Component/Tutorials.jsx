@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MediaCard from "../Component/card";
+import MediaCard from "./card";
 
 const Tutorials = () => {
   const [selectedTutorial, setSelectedTutorial] = useState("");
@@ -17,9 +17,7 @@ const Tutorials = () => {
             description="Understand the fundamentals of regression analysis and its real-world applications."
             videoUrl={`https://www.youtube.com/embed/zUQr6HAAKp4`}
             learnMore="https://www.youtube.com/@GateSmashers/search?query=linear%20regression"
-          
-      
-/>
+          />
         );
       case "K-mean Clustering":
         return (
@@ -27,7 +25,7 @@ const Tutorials = () => {
             label="K-mean Clustering Tutorial"
             description="Learn about clustering algorithms and how to group similar data points."
             videoUrl="https://www.youtube.com/embed/VIDEO_ID_FOR_K_MEAN"
-            learnMore = "https://www.youtube.com/@GateSmashers/search?query=clustering"
+            learnMore="https://www.youtube.com/@GateSmashers/search?query=clustering"
           />
         );
       case "Decision Trees":
@@ -35,7 +33,7 @@ const Tutorials = () => {
           <MediaCard
             label="Decision Trees Tutorial"
             description="Learn how decision trees work and their applications in machine learning."
-            videoUrl='https://www.youtube.com/embed/mvveVcbHynE'
+            videoUrl="https://www.youtube.com/embed/mvveVcbHynE"
             learnMore="https://www.youtube.com/@GateSmashers/search?query=Decision%20Trees"
           />
         );

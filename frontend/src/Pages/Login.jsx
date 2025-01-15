@@ -1,10 +1,10 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../Component/LoginButton";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import logo from "../../public/logo.png"
+import axios from "axios"; // Import axios for API requests
+import logo from "../../public/logo.png";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -20,11 +20,17 @@ const Login = () => {
         }
 
         try {
-            console.log(email, password);
-            toast.success("Login Successfully", { autoClose: 1000 });
-            navigate("/flowlytics")
+            const response = await axios.post("http://localhost:3000/auth/login", {
+                email,
+                password,
+            });
+
+            if (response.status === 200) {
+                toast.success("Login Successfully", { autoClose: 1000 });
+                navigate("/flowlytics");
+            }
         } catch (error) {
-            toast.error("Cannot login at the moment", { autoClose: 1000 });
+            toast.error("Invalid email or password", { autoClose: 1000 });
         } finally {
             setEmail("");
             setPassword("");
@@ -34,14 +40,14 @@ const Login = () => {
     return (
         <div className="h-screen flex justify-center items-center">
             <div className="bg-white w-full max-w-sm p-6 rounded-lg shadow-lg">
-            <div className="flex justify-center items-center">
-          <img
-            src={logo}
-            alt="FlowLytics Logo"
-            className="w-16 h-16 object-contain"
-          />
-          <h1 className="font-bold text-3xl text-gray-800">FlowLytics</h1>
-        </div>
+                <div className="flex justify-center items-center">
+                    <img
+                        src={logo}
+                        alt="FlowLytics Logo"
+                        className="w-16 h-16 object-contain"
+                    />
+                    <h1 className="font-bold text-3xl text-gray-800">FlowLytics</h1>
+                </div>
                 <p className="text-center text-gray-500 mb-6">Seamless Data, Powerful Insights</p>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
@@ -100,9 +106,9 @@ const Login = () => {
                         <p>
                             New here?{" "}
                             <Link to="/auth/sign-up">
-                            <span className="text-blue-700 font-semibold cursor-pointer hover:underline">
-                                Create an Account
-                            </span>
+                                <span className="text-blue-700 font-semibold cursor-pointer hover:underline">
+                                    Create an Account
+                                </span>
                             </Link>
                         </p>
                     </div>

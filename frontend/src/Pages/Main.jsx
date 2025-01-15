@@ -13,10 +13,10 @@ const Main = () => {
       <Navbar />
       <div className="mx-4 sm:mx-8 lg:mx-16">
         <DatasetUploader />
-        <DataCleansingTools />
         <VisualizationDashboard />
-        <Tutorials />
         <PredectiveModeling />
+        <DataCleansingTools />
+        <Tutorials />
       </div>
       <Footer />
     </div>

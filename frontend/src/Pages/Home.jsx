@@ -32,7 +32,7 @@ const Home = () => {
             <Link to="/auth/login">
               <LoginButton
                 label="Login"
-                sx={{ backgroundColor: "black", width: "200px" }}
+                sx={{ backgroundColor: "black", width: "200px", color:"white" }}
               />
             </Link>
           </div>
@@ -40,7 +40,7 @@ const Home = () => {
           <Link to = "/auth/sign-up">
           <SignUpButton
             label="Sign Up"
-            sx={{ backgroundColor: "#4CAF50", width: "200px" }}
+            sx={{ backgroundColor: "#4CAF50", width: "200px", color:"white" }}
           /></Link>
           </div>
         </div>

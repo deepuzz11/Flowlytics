@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/9d386b74-d0e7-480f-9325-4b2fbf5a0313" alt="logo" style="height: 50px; display: inline; margin-right: 10px;"> #Flowlytics: Seamless Data, Powerful Insights
+# <img src="https://github.com/user-attachments/assets/9d386b74-d0e7-480f-9325-4b2fbf5a0313" alt="logo" style="height: 60px; display: inline; margin-right: 10px;"> Flowlytics: Seamless Data, Powerful Insights
 
 
 Flowlytics is an innovative web platform designed to help students explore, analyze, and visualize data, empowering them to learn and apply data science concepts in an interactive and engaging way. By providing tools for dataset exploration, data cleaning, visualization, and predictive modeling, Flowlytics bridges theory with practice, making data science more accessible and fun for middle schoolers.

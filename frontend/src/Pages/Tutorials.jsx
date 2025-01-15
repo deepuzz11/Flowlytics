@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MediaCard from "./card";
+import MediaCard from "../Component/card";
 
 const Tutorials = () => {
   const [selectedTutorial, setSelectedTutorial] = useState("");

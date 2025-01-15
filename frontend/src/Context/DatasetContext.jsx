@@ -5,7 +5,7 @@ export const DatasetContext = createContext();
 const DatasetProvider = ({ children }) => {
   const [dataset, setDataset] = useState([]); 
   const [column, setColumn] = useState([]); 
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(false); 
 
   const value = {
     dataset,

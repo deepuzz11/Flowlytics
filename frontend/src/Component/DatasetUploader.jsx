@@ -1,29 +1,39 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@mui/material";
 import { AiFillDelete } from "react-icons/ai";
+import { DatasetContext } from "../Context/DatasetContext";
+
 
 const DatasetUploader = () => {
-  const [data, setData] = useState([]);
-  const [columns, setColumns] = useState([]);
-  const [fileInputKey, setFileInputKey] = useState(Date.now()); // To reset file input
+  const {
+    dataset,
+    setDataset,
+    column,
+    setColumn,
+    isLoading,
+    setIsLoading,
+  } = useContext(DatasetContext);
+
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file?.type !== "text/csv") {
       toast.error("Please upload a valid CSV file.");
-      setData([]);
-      setColumns([]);
+      setDataset([]);
+      setColumn([]);
       return;
     }
+
+    setIsLoading(true); // Show loading state while processing
 
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: (result) => {
-        // Replace "�" with "_" in the parsed data
         const cleanedData = result.data.map((row) =>
           Object.fromEntries(
             Object.entries(row).map(([key, value]) => [
@@ -33,18 +43,20 @@ const DatasetUploader = () => {
           )
         );
 
-        setData(cleanedData);
-        setColumns(Object.keys(cleanedData[0] || {}));
+        setDataset(cleanedData); // Update dataset in context
+        setColumn(Object.keys(cleanedData[0] || {})); // Update columns in context
+        setIsLoading(false); // Stop loading state
       },
       error: () => {
         toast.error("Error parsing the CSV file.");
+        setIsLoading(false); // Stop loading state
       },
     });
   };
 
   const handleDelete = () => {
-    setData([]);
-    setColumns([]);
+    setDataset([]); // Clear dataset in context
+    setColumn([]); // Clear columns in context
     setFileInputKey(Date.now()); // Reset the file input
     toast.success("Dataset deleted successfully.", { autoClose: 1000 });
   };
@@ -58,7 +70,7 @@ const DatasetUploader = () => {
       {/* File Input and Delete Button */}
       <div className="flex justify-center items-center gap-4 mb-6">
         <input
-          key={fileInputKey} // Reset file input by changing key
+          key={fileInputKey}
           type="file"
           accept=".csv"
           onChange={handleFileUpload}
@@ -75,36 +87,40 @@ const DatasetUploader = () => {
       </div>
 
       {/* Display Table */}
-      {data.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300 text-sm rounded-md">
-            <thead className="bg-gray-100">
-              <tr>
-                {columns.map((col, index) => (
-                  <th key={index} className="border px-4 py-2 text-left">
-                    {col}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  }`}
-                >
-                  {columns.map((col) => (
-                    <td key={col} className="border px-4 py-2">
-                      {row[col]}
-                    </td>
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : (
+        dataset.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-300 text-sm rounded-md">
+              <thead className="bg-gray-100">
+                <tr>
+                  {column.map((col, index) => (
+                    <th key={index} className="border px-4 py-2 text-left">
+                      {col}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {dataset.map((row, index) => (
+                  <tr
+                    key={index}
+                    className={`${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    {column.map((col) => (
+                      <td key={col} className="border px-4 py-2">
+                        {row[col]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
     </div>
   );

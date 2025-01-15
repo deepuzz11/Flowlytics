@@ -8,12 +8,12 @@ import cors from "cors";
 dotenv.config();
 //db Xonnection
 const myApp = express();
-const crosOrigin = {
-    origin : 'http://localhost:5173',
-    methods : ['GET,PUT,POST,PATCH,DELETE'],
-    credentials: true,
-}
-myApp.use(cors(crosOrigin))
+// const crosOrigin = {
+//     origin : 'http://localhost:5173',
+//     methods : ['GET,PUT,POST,PATCH,DELETE'],
+//     credentials: true,
+// }
+myApp.use(cors())
 myApp.use(express.json())
 
 myApp.use(AllRoutes)

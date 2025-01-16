@@ -51,14 +51,13 @@ The next steps for Flowlytics include:
 - **Cloud Services**: Heroku
 - **Version Control**: GitHub
 
-## Try it out
-Check out the live platform or explore the GitHub repository:
+## Demo
+Check out the demo video:
 - [Live Demo Link ](http://your-demo-link)
-- [GitHub Repository](https://github.com/your-repo)
 
-### Video Demo
-Watch the video demo on how Flowlytics works and its features:
-[Video Demo Link](https://link-to-video)
+### Video 
+Watch the video  on how Flowlytics works and its features:
+[Video Link](https://youtu.be/J6ECsrgAXjw)
 
 ---
 

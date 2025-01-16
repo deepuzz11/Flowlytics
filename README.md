@@ -15,12 +15,11 @@ Flowlytics provides an interactive, user-friendly platform for students to:
 
 ## How We Built It
 Flowlytics was developed using a combination of technologies that ensure smooth functionality and scalability:
-- **Backend**: Python with Flask for the web application logic, handling data processing, model building, and user requests.
-- **Frontend**: HTML, CSS, and JavaScript to build a responsive and visually appealing user interface. We used Bootstrap to ensure mobile-friendly design.
+- **Backend**: Python with React for the web application logic, handling data processing, model building, and user requests.
+- **Frontend**: JavaScript to build a responsive and visually appealing user interface. We used Bootstrap to ensure mobile-friendly design.
 - **Data Manipulation and Visualization**: Pandas for data processing, Matplotlib, Seaborn, and Plotly for creating static and interactive visualizations.
 - **Machine Learning**: Scikit-learn for implementing data science algorithms like linear regression and k-means clustering.
-- **Database**: SQLite for storing datasets, user progress, and session information.
-- **Deployment**: The platform is deployed on Heroku to make it accessible to users online.
+- **Database**: MongoDB for storing datasets, user progress, and session information.
 
 ## Challenges We Ran Into
 - **User Interface Design**: Designing a user-friendly interface that is both engaging and intuitive for middle schoolers was a challenge. We had to ensure the platform was visually appealing without overwhelming the user.
@@ -44,11 +43,10 @@ The next steps for Flowlytics include:
 - **Gamification**: Introducing challenges and gamified features to make the learning process more fun and engaging, encouraging users to explore more data science concepts.
 
 ## Built With
-- **Languages**: Python, HTML, CSS, JavaScript
-- **Frameworks**: Flask, Bootstrap
+- **Languages**: Python, Javascript
+- **Frameworks**: React, Bootstrap
 - **Libraries**: Pandas, Matplotlib, Seaborn, Plotly, Scikit-learn
-- **Database**: SQLite
-- **Cloud Services**: Heroku
+- **Database**: MongoDB
 - **Version Control**: GitHub
 
 ## Demo
